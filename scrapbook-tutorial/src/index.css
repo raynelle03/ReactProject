@@ -22,8 +22,19 @@ code {
   padding: .5em;
 }
 
-.form-row button {
-  background: gray;
-  color: white;
-  border: 0;
+.commentwrapper {
+  background-color: whitesmoke;
+  list-style-type: none;
+  padding: 0;
+  border-radius: 3px;
+}
+
+.comment-row {
+  display: flex;
+  justify-content: flex-start;
+  padding: .5em;
+}
+
+.comment-name {
+  font-weight: bold;
 }
