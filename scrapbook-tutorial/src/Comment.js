@@ -9,7 +9,7 @@ const CommentBody = (props) => {
             <label>{row.name}</label>
           </li>
           <li class="comment-mesage">
-            <label>{row.job}</label>
+            <label>{row.comment}</label>
           </li>
         </ul>
         {/* <button onClick={() => props.removeCharacter(index)}>Delete</button> */}

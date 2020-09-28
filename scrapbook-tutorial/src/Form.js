@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class Form extends Component {
   initialState = {
     name: "",
-    job: "",
+    comment: "",
   };
 
   state = this.initialState;
@@ -17,7 +17,7 @@ class Form extends Component {
   };
 
   render() {
-    const { name, job } = this.state;
+    const { name, comment } = this.state;
 
     return (
       <form>
@@ -33,13 +33,13 @@ class Form extends Component {
             />
           </li>
           <li class="form-row">
-            <label htmlFor="job">Leave your message here</label>
+            <label htmlFor="comment">Leave your message here</label>
 
             <textarea
               ype="textarea"
-              name="job"
-              id="job"
-              value={job}
+              name="comment"
+              id="comment"
+              value={comment}
               onChange={this.handleChange}
               rows="5"
             />
