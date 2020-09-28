@@ -38,3 +38,13 @@ code {
 .comment-name {
   font-weight: bold;
 }
+
+.container {
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 800px;
+}
+
+.root {
+  display: flex;
+}
