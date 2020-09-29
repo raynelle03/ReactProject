@@ -12,7 +12,6 @@ const CommentBody = (props) => {
             <label>{row.comment}</label>
           </li>
         </ul>
-        {/* <button onClick={() => props.removeCharacter(index)}>Delete</button> */}
       </div>
     );
   });
@@ -21,14 +20,9 @@ const CommentBody = (props) => {
 };
 
 const Comment = (props) => {
-  const { characterData, removeCharacter } = props;
+  const { characterData } = props;
 
-  return (
-    <CommentBody
-      characterData={characterData}
-      removeCharacter={removeCharacter}
-    />
-  );
+  return <CommentBody characterData={characterData} />;
 };
 
 export default Comment;

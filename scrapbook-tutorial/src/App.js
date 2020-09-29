@@ -13,23 +13,10 @@ class App extends Component {
     return (
       <div className="container">
         <Form handleSubmit={this.handleSubmit} />
-        <Comment
-          characterData={characters}
-          removeCharacter={this.removeCharacter}
-        />
+        <Comment characterData={characters} />
       </div>
     );
   }
-
-  removeCharacter = (index) => {
-    const { characters } = this.state;
-
-    this.setState({
-      characters: characters.filter((character, i) => {
-        return i !== index;
-      }),
-    });
-  };
 
   handleSubmit = (character) => {
     this.setState({ characters: [...this.state.characters, character] });
