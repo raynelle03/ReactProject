@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-const CommentBody = (props) => {
+function CommentBody(props) {
   const rows = props.characterData.map((row, index) => {
     return (
       <div className="comment" key={index}>
@@ -17,12 +17,12 @@ const CommentBody = (props) => {
   });
 
   return <div className="comments">{rows}</div>;
-};
+}
 
-const Comment = (props) => {
+function Comment(props) {
   const { characterData } = props;
 
   return <CommentBody characterData={characterData} />;
-};
+}
 
 export default Comment;
