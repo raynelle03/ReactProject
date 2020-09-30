@@ -1,28 +1,30 @@
 import React, { Component } from "react";
 
-function CommentBody(props) {
-  const rows = props.characterData.map((row, index) => {
-    return (
-      <div className="comment" key={index}>
-        <ul class="commentwrapper">
-          <li class="comment-name">
-            <label>{row.name}</label>
-          </li>
-          <li class="comment-mesage">
-            <label>{row.comment}</label>
-          </li>
-        </ul>
-      </div>
-    );
+export default (props) => {
+  const comments = props.characterData.map((commentItem, index) => {
+    return <CommentList index={index} commentItem={commentItem} />;
   });
+  return <div className="comments">{comments}</div>;
+};
 
-  return <div className="comments">{rows}</div>;
-}
+const CommentList = (props) => {
+  return (
+    <div className="comment" key={props.index}>
+      <CommentItem commentItem={props.commentItem} />
+    </div>
+  );
+};
 
-function Comment(props) {
-  const { characterData } = props;
-
-  return <CommentBody characterData={characterData} />;
-}
-
-export default Comment;
+const CommentItem = (props) => {
+  console.log(props);
+  return (
+    <ul class="commentItem">
+      <li class="commentItem-name">
+        <label>{props.commentItem.name}</label>
+      </li>
+      <li class="commentItem-message">
+        <label>{props.commentItem.comment}</label>
+      </li>
+    </ul>
+  );
+};

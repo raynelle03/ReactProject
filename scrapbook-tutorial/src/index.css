@@ -22,20 +22,19 @@ code {
   padding: .5em;
 }
 
-.commentwrapper {
+.commentItem {
   background-color: whitesmoke;
   list-style-type: none;
-  padding: 0;
+  padding: 10px;
   border-radius: 3px;
 }
 
-.comment-row {
+.commentItem-message {
   display: flex;
   justify-content: flex-start;
-  padding: .5em;
 }
 
-.comment-name {
+.commentItem-name {
   font-weight: bold;
 }
 
@@ -45,6 +44,6 @@ code {
   width: 800px;
 }
 
-.root {
+#root {
   display: flex;
 }
