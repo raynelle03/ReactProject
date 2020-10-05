@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import Comment from "./Comment";
 import Form from "./Form";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 class App extends Component {
   state = {
     characters: [],
   };
+
+  onDragEnd = (result) => {};
 
   render() {
     const { characters } = this.state;
@@ -13,12 +16,15 @@ class App extends Component {
     return (
       <div className="container">
         <Form handleSubmit={this.handleSubmit} />
-        <Comment characterData={characters} />
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Comment characterData={characters} />
+        </DragDropContext>
       </div>
     );
   }
 
   handleSubmit = (character) => {
+    console.log(character);
     this.setState({ characters: [...this.state.characters, character] });
   };
 }
