@@ -8,7 +8,14 @@ class App extends Component {
     characters: [],
   };
 
-  onDragEnd = (result) => {};
+  onDragEnd = (result) => {
+    console.log(result);
+    if (!result.destination) return;
+    const items = this.state.characters;
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    this.setState({ characters: items });
+  };
 
   render() {
     const { characters } = this.state;

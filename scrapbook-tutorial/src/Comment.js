@@ -15,6 +15,7 @@ export default (props) => {
           ref={provided.innerRef}
         >
           {comments}
+          {provided.placeholder}
         </div>
       )}
     </Droppable>
