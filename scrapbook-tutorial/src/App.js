@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import Comment from "./Comment";
 import Form from "./Form";
+import Dialog from "./Dialog";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 class App extends Component {
   state = {
     characters: [],
+    isOpen: false,
   };
 
   onDragEnd = (result) => {
@@ -26,11 +28,23 @@ class App extends Component {
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Comment characterData={characters} />
         </DragDropContext>
+        <Dialog isOpen={this.state.isOpen} onClose={this.onClose}>
+          Please enter your name and comment
+        </Dialog>
       </div>
     );
   }
 
+  onClose = () => {
+    this.setState({ isOpen: false });
+  };
+
   handleSubmit = (character) => {
+    if (character.name === "" || character.comment === "") {
+      this.setState({ isOpen: true });
+      return;
+    }
+
     console.log(character);
     this.setState({ characters: [...this.state.characters, character] });
   };
