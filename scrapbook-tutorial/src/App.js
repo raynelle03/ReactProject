@@ -6,6 +6,10 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 class App extends Component {
   static previousActiveElement;
+  static dialog;
+  static dialogMask;
+  static dialogWindow;
+
   constructor() {
     super();
   }
@@ -23,6 +27,12 @@ class App extends Component {
     this.setState({ comments: items });
   };
 
+  componentDidMount() {
+    this.dialog = document.querySelector(".dialog");
+    this.dialogMask = document.querySelector(".dialog__mask");
+    this.dialogWindow = document.querySelector(".dialog__window");
+  }
+
   render() {
     const { comments } = this.state;
     return (
@@ -31,20 +41,7 @@ class App extends Component {
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Comment characterData={comments} />
         </DragDropContext>
-
-        <div class="dialog" role="dialog" aria-labelledby="dialog_title">
-          <div class="dialog__window">
-            <div>
-              <h2 id="dialog_title">Alert</h2>
-            </div>
-            <div>
-              <p>Please enter your name and comment</p>
-              <button>close</button>
-              <button>ok</button>
-            </div>
-          </div>
-          <div class="dialog__mask"></div>
-        </div>
+        <Dialog></Dialog>
       </div>
     );
   }
@@ -65,45 +62,40 @@ class App extends Component {
     this.previousActiveElement = document.activeElement;
 
     Array.from(document.body.children).forEach((child) => {
-      if (child != document.querySelector(".dialog")) {
+      if (child != this.dialog) {
         child.inert = true;
       }
     });
 
-    document.querySelector(".dialog").classList.add("opened");
-    document
-      .querySelector(".dialog__window")
-      .querySelectorAll("button")
-      .forEach((button) => {
-        button.addEventListener("click", this.closeDialog);
-      });
+    this.dialog.classList.add("opened");
+    this.dialogWindow.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", this.closeDialog);
+    });
     document.addEventListener("keydown", this.checkCloseDialog);
-    document.querySelector(".dialog").querySelector("button").focus();
+    this.dialog.querySelector("button").focus();
   };
 
   checkCloseDialog = (e) => {
     if (e.keyCode === 27) {
+      // Close dialog on esc key
       this.closeDialog();
     }
   };
 
   closeDialog = () => {
-    document
-      .querySelector(".dialog__window")
-      .querySelectorAll("button")
-      .forEach((button) => {
-        button.removeEventListener("click", this.closeDialog);
-      });
+    this.dialogWindow.querySelectorAll("button").forEach((button) => {
+      button.removeEventListener("click", this.closeDialog);
+    });
 
     document.removeEventListener("keydown", this.checkCloseDialog);
 
     Array.from(document.body.children).forEach((child) => {
-      if (child != document.querySelector(".dialog")) {
+      if (child != this.dialog) {
         child.inert = false;
       }
     });
 
-    document.querySelector(".dialog").classList.remove("opened");
+    this.dialog.classList.remove("opened");
     this.previousActiveElement.focus();
   };
 }
