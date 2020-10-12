@@ -42,8 +42,42 @@ code {
   flex-direction: column;
   flex-wrap: wrap;
   width: 800px;
+  margin: 10px;
 }
 
 #root {
   display: flex;
+}
+
+.dialog {
+  display: none;
+}
+
+.dialog.opened {
+  display: block;
+}
+
+.dialog__window {
+  z-index: 101;
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dialog__mask {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: rgb(10, 10, 10);
+  opacity: 0.6;
 }

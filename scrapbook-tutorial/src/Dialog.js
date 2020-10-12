@@ -31,7 +31,8 @@ let dialogCloseButtonStyle = {
 class Dialog extends Component {
   render() {
     let dialog = (
-      <div style={dialogStyles}>
+      <div style={dialogStyles} className="modal-content">
+        <h2 id="dialog_title">Alert</h2>
         <button style={dialogCloseButtonStyle} onClick={this.props.onClose}>
           x
         </button>
@@ -43,7 +44,11 @@ class Dialog extends Component {
       dialog = null;
     }
 
-    return <div>{dialog}</div>;
+    return (
+      <div className="modal-container" role="dialog" aria-modal="true">
+        {dialog}
+      </div>
+    );
   }
 }
 

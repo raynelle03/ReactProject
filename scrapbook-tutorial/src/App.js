@@ -5,48 +5,106 @@ import Dialog from "./Dialog";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 class App extends Component {
+  static previousActiveElement;
+  constructor() {
+    super();
+  }
+
   state = {
-    characters: [],
-    isOpen: false,
+    comments: [],
   };
 
   onDragEnd = (result) => {
     console.log(result);
     if (!result.destination) return;
-    const items = this.state.characters;
+    const items = this.state.comments;
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    this.setState({ characters: items });
+    this.setState({ comments: items });
   };
 
   render() {
-    const { characters } = this.state;
-
+    const { comments } = this.state;
     return (
       <div className="container">
         <Form handleSubmit={this.handleSubmit} />
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <Comment characterData={characters} />
+          <Comment characterData={comments} />
         </DragDropContext>
-        <Dialog isOpen={this.state.isOpen} onClose={this.onClose}>
-          Please enter your name and comment
-        </Dialog>
+
+        <div class="dialog" role="dialog" aria-labelledby="dialog_title">
+          <div class="dialog__window">
+            <div>
+              <h2 id="dialog_title">Alert</h2>
+            </div>
+            <div>
+              <p>Please enter your name and comment</p>
+              <button>close</button>
+              <button>ok</button>
+            </div>
+          </div>
+          <div class="dialog__mask"></div>
+        </div>
       </div>
     );
   }
 
-  onClose = () => {
-    this.setState({ isOpen: false });
-  };
-
-  handleSubmit = (character) => {
-    if (character.name === "" || character.comment === "") {
-      this.setState({ isOpen: true });
+  handleSubmit = (comment) => {
+    if (comment.name === "" || comment.comment === "") {
+      this.openDialog();
       return;
     }
 
-    console.log(character);
-    this.setState({ characters: [...this.state.characters, character] });
+    console.log(comment);
+    this.setState({ comments: [...this.state.comments, comment] });
+  };
+
+  //Dialog stuff
+
+  openDialog = () => {
+    this.previousActiveElement = document.activeElement;
+
+    Array.from(document.body.children).forEach((child) => {
+      if (child != document.querySelector(".dialog")) {
+        child.inert = true;
+      }
+    });
+
+    document.querySelector(".dialog").classList.add("opened");
+    document
+      .querySelector(".dialog__window")
+      .querySelectorAll("button")
+      .forEach((button) => {
+        button.addEventListener("click", this.closeDialog);
+      });
+    document.addEventListener("keydown", this.checkCloseDialog);
+    document.querySelector(".dialog").querySelector("button").focus();
+  };
+
+  checkCloseDialog = (e) => {
+    if (e.keyCode === 27) {
+      this.closeDialog();
+    }
+  };
+
+  closeDialog = () => {
+    document
+      .querySelector(".dialog__window")
+      .querySelectorAll("button")
+      .forEach((button) => {
+        button.removeEventListener("click", this.closeDialog);
+      });
+
+    document.removeEventListener("keydown", this.checkCloseDialog);
+
+    Array.from(document.body.children).forEach((child) => {
+      if (child != document.querySelector(".dialog")) {
+        child.inert = false;
+      }
+    });
+
+    document.querySelector(".dialog").classList.remove("opened");
+    this.previousActiveElement.focus();
   };
 }
 
