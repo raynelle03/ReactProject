@@ -10,6 +10,9 @@ class App extends Component {
   static dialogMask;
   static dialogWindow;
 
+  static lastFocusableEl;
+  static firstFocusableEl;
+
   constructor() {
     super();
   }
@@ -60,25 +63,31 @@ class App extends Component {
 
   openDialog = () => {
     this.previousActiveElement = document.activeElement;
-
-    Array.from(document.body.children).forEach((child) => {
-      if (child != this.dialog) {
-        child.inert = true;
-      }
-    });
-
     this.dialog.classList.add("opened");
     this.dialogWindow.querySelectorAll("button").forEach((button) => {
       button.addEventListener("click", this.closeDialog);
     });
     document.addEventListener("keydown", this.checkCloseDialog);
     this.dialog.querySelector("button").focus();
+
+    var focusableEls = this.dialogWindow.querySelectorAll("button");
+    this.firstFocusableEl = focusableEls[0];
+    this.lastFocusableEl = focusableEls[focusableEls.length - 1];
   };
 
   checkCloseDialog = (e) => {
-    if (e.keyCode === 27) {
-      // Close dialog on esc key
-      this.closeDialog();
+    switch (e.keyCode) {
+      case 27: //Close dialog on esc key
+        this.closeDialog();
+      case 9:
+        this.handleTabKey(e);
+    }
+  };
+
+  handleTabKey = (e) => {
+    if (document.activeElement === this.lastFocusableEl) {
+      e.preventDefault();
+      this.firstFocusableEl.focus();
     }
   };
 
@@ -88,13 +97,6 @@ class App extends Component {
     });
 
     document.removeEventListener("keydown", this.checkCloseDialog);
-
-    Array.from(document.body.children).forEach((child) => {
-      if (child != this.dialog) {
-        child.inert = false;
-      }
-    });
-
     this.dialog.classList.remove("opened");
     this.previousActiveElement.focus();
   };
