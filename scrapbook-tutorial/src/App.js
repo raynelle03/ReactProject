@@ -1,105 +1,110 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Comment from "./Comment";
 import Form from "./Form";
 import Dialog from "./Dialog";
+import axios from "axios";
+import ApiList from "./ApiList";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
-class App extends Component {
-  static previousActiveElement;
-  static dialog;
-  static dialogMask;
-  static dialogWindow;
+const myDogServerBaseURL = "https://dog.ceo/api";
 
-  static lastFocusableEl;
-  static firstFocusableEl;
+const App = () => {
+  var previousActiveElement;
+  var dialog;
+  var dialogMask;
+  var dialogWindow;
 
-  constructor() {
-    super();
-  }
+  var lastFocusableEl;
+  var firstFocusableEl;
 
-  state = {
-    comments: [],
-  };
+  const [comments, setComments] = useState([]);
+  const [items, setItems] = useState([]);
 
-  onDragEnd = (result) => {
-    console.log(result);
-    if (!result.destination) return;
-    const items = this.state.comments;
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
-    this.setState({ comments: items });
-  };
+  const loadItems = useCallback(() => {
+    axios.get(`${myDogServerBaseURL}/breed/hound/list`).then((response) => {
+      console.log("response");
+      console.log(response);
+      setItems(response.data.message);
+    });
+  }, []);
 
-  componentDidMount() {
-    this.dialog = document.querySelector(".dialog");
-    this.dialogMask = document.querySelector(".dialog__mask");
-    this.dialogWindow = document.querySelector(".dialog__window");
-  }
+  useEffect(() => {
+    dialog = document.querySelector(".dialog");
+    dialogMask = document.querySelector(".dialog__mask");
+    dialogWindow = document.querySelector(".dialog__window");
+  });
 
-  render() {
-    const { comments } = this.state;
-    return (
-      <div className="container">
-        <Form handleSubmit={this.handleSubmit} />
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Comment characterData={comments} />
-        </DragDropContext>
-        <Dialog></Dialog>
-      </div>
-    );
-  }
-
-  handleSubmit = (comment) => {
+  const handleSubmit = (comment) => {
     if (comment.name === "" || comment.comment === "") {
-      this.openDialog();
+      openDialog();
       return;
     }
-
-    console.log(comment);
-    this.setState({ comments: [...this.state.comments, comment] });
+    let updatedComments = [...comments, comment];
+    setComments(updatedComments);
   };
 
   //Dialog stuff
-
-  openDialog = () => {
-    this.previousActiveElement = document.activeElement;
-    this.dialog.classList.add("opened");
-    this.dialogWindow.querySelectorAll("button").forEach((button) => {
-      button.addEventListener("click", this.closeDialog);
+  const openDialog = () => {
+    console.log(dialog);
+    previousActiveElement = document.activeElement;
+    dialog.classList.add("opened");
+    dialogWindow.querySelectorAll("button").forEach((button) => {
+      button.addEventListener("click", closeDialog);
     });
-    document.addEventListener("keydown", this.checkCloseDialog);
-    this.dialog.querySelector("button").focus();
+    document.addEventListener("keydown", checkCloseDialog);
+    dialog.querySelector("button").focus();
 
-    var focusableEls = this.dialogWindow.querySelectorAll("button");
-    this.firstFocusableEl = focusableEls[0];
-    this.lastFocusableEl = focusableEls[focusableEls.length - 1];
+    var focusableEls = dialogWindow.querySelectorAll("button");
+    firstFocusableEl = focusableEls[0];
+    lastFocusableEl = focusableEls[focusableEls.length - 1];
   };
 
-  checkCloseDialog = (e) => {
+  const checkCloseDialog = (e) => {
     switch (e.keyCode) {
       case 27: //Close dialog on esc key
-        this.closeDialog();
+        closeDialog();
       case 9:
-        this.handleTabKey(e);
+        handleTabKey(e);
     }
   };
 
-  handleTabKey = (e) => {
-    if (document.activeElement === this.lastFocusableEl) {
+  const handleTabKey = (e) => {
+    if (document.activeElement === lastFocusableEl) {
       e.preventDefault();
-      this.firstFocusableEl.focus();
+      firstFocusableEl.focus();
     }
   };
 
-  closeDialog = () => {
-    this.dialogWindow.querySelectorAll("button").forEach((button) => {
-      button.removeEventListener("click", this.closeDialog);
+  const closeDialog = () => {
+    dialogWindow.querySelectorAll("button").forEach((button) => {
+      button.removeEventListener("click", closeDialog);
     });
 
-    document.removeEventListener("keydown", this.checkCloseDialog);
-    this.dialog.classList.remove("opened");
-    this.previousActiveElement.focus();
+    document.removeEventListener("keydown", checkCloseDialog);
+    dialog.classList.remove("opened");
+    previousActiveElement.focus();
   };
-}
+
+  const onDragEnd = (result) => {
+    console.log(result);
+    if (!result.destination) return;
+    const items = comments;
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setComments(items);
+  };
+
+  return (
+    <div className="container">
+      <Form handleSubmit={handleSubmit} />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Comment characterData={comments} />
+      </DragDropContext>
+      <Dialog></Dialog>
+      <input type="button" value="Get list" onClick={loadItems} />
+      <ApiList items={items} />
+    </div>
+  );
+};
 
 export default App;

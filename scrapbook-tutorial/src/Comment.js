@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
 export default (props) => {
+  console.log(props);
   const comments = props.characterData.map((commentItem, index) => {
     return <CommentList index={index} commentItem={commentItem} />;
   });

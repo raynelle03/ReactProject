@@ -81,3 +81,87 @@ code {
   background-color: rgb(10, 10, 10);
   opacity: 0.6;
 }
+
+@media only screen and (max-width: 600px) {
+  body {
+    background-color: hsl(20deg, 50%, 70%);
+  }
+  .wrapper {
+    font-size: large;
+  }
+  .commentItem {
+    font-size: large;
+  }
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+img {
+  padding: 0;
+  margin: 0;
+  height: auto;
+}
+
+@media screen and (max-width: 600px) {
+  header {
+    background-image: url(./images/alvaro-reyes-600-600.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 544px;
+    border-bottom: 2rem solid hsl(20deg, 50%, 70%);
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  img {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1200px) {
+  header {
+    background-image: url(./images/alvaro-reyes-1000-500.jpg);
+    background-size: cover;
+    min-height: 500px;
+    border-bottom: 2rem solid hsl(220deg, 50%, 70%);
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  img {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 1201px) {
+  header {
+    background-image: url(./images/alvaro-reyes-1550-900.jpg);
+    background-size: cover;
+    min-height: 500px;
+    border-bottom: 2rem solid hsl(90deg, 50%, 70%);
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  img {
+    width: 60%;
+  }
+}
+
+.box {
+  background: #2db34a;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 95px;
+  transition-property: background, border-radius;
+  transition-duration: 1s;
+  transition-timing-function: linear;
+  width: 95px;
+}
+
+.box:hover {
+  background: #ff7b29;
+  border-radius: 50%;
+}
