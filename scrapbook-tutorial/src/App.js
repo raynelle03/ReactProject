@@ -19,23 +19,37 @@ const App = () => {
 
   const [comments, setComments] = useState([]);
   const [items, setItems] = useState([]);
+  const [callInProgress, setCallInProgress] = useState(false);
 
   const loadItems = () => {
+    setCallInProgress(true);
     axios
       .get(`${myDogServerBaseURL}/breed/hound/list`)
       .then((response) => {
         console.log("response");
         console.log(response);
         setItems(response.data.message);
+        setCallInProgress(false);
       })
 
-      .catch((error) => console.log("error found"));
+      .catch((error) => {
+        console.log("error found");
+        setCallInProgress(false);
+      });
   };
 
   useEffect(() => {
     dialog = document.querySelector(".dialog");
     dialogMask = document.querySelector(".dialog__mask");
     dialogWindow = document.querySelector(".dialog__window");
+  }, []);
+
+  useEffect(() => {
+    if (callInProgress) {
+      console.log("call in progress");
+    } else {
+      console.log("call not in progress");
+    }
   });
 
   const handleSubmit = (comment) => {
