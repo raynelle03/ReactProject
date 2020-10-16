@@ -20,13 +20,13 @@ const App = () => {
   const [comments, setComments] = useState([]);
   const [items, setItems] = useState([]);
 
-  const loadItems = useCallback(() => {
+  const loadItems = () => {
     axios.get(`${myDogServerBaseURL}/breed/hound/list`).then((response) => {
       console.log("response");
       console.log(response);
       setItems(response.data.message);
     });
-  }, []);
+  };
 
   useEffect(() => {
     dialog = document.querySelector(".dialog");
