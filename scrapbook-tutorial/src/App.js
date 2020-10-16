@@ -50,7 +50,7 @@ const App = () => {
     } else {
       console.log("call not in progress");
     }
-  });
+  }, [callInProgress]);
 
   const handleSubmit = (comment) => {
     if (comment.name === "" || comment.comment === "") {
