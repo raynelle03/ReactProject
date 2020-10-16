@@ -21,11 +21,15 @@ const App = () => {
   const [items, setItems] = useState([]);
 
   const loadItems = () => {
-    axios.get(`${myDogServerBaseURL}/breed/hound/list`).then((response) => {
-      console.log("response");
-      console.log(response);
-      setItems(response.data.message);
-    });
+    axios
+      .get(`${myDogServerBaseURL}/breed/hound/list`)
+      .then((response) => {
+        console.log("response");
+        console.log(response);
+        setItems(response.data.message);
+      })
+
+      .catch((error) => console.log("error found"));
   };
 
   useEffect(() => {
@@ -54,7 +58,7 @@ const App = () => {
     document.addEventListener("keydown", checkCloseDialog);
     dialog.querySelector("button").focus();
 
-    var focusableEls = dialogWindow.querySelectorAll("button");
+    const focusableEls = dialogWindow.querySelectorAll("button");
     firstFocusableEl = focusableEls[0];
     lastFocusableEl = focusableEls[focusableEls.length - 1];
   };
