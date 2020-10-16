@@ -1,28 +1,62 @@
 import React, { Component } from "react";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
 export default (props) => {
+  console.log(props);
   const comments = props.characterData.map((commentItem, index) => {
     return <CommentList index={index} commentItem={commentItem} />;
   });
-  return <div className="comments">{comments}</div>;
+
+  return (
+    <Droppable droppableId="allcomments">
+      {(provided) => (
+        <div
+          className="comments"
+          {...provided.droppableProps}
+          ref={provided.innerRef}
+        >
+          {comments}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  );
 };
 
 const CommentList = (props) => {
+  const testid = `item-${props.index}`;
   return (
-    <div className="comment" key={props.index}>
-      <CommentItem commentItem={props.commentItem} />
-    </div>
+    <Draggable draggableId={testid} index={props.index} key={props.index}>
+      {(provided) => (
+        <div
+          className="comment"
+          key={props.index}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          <ul className="commentItem" key={props.index}>
+            <li className="commentItem-name">
+              <label>{props.commentItem.name}</label>
+            </li>
+            <li className="commentItem-message">
+              <label>{props.commentItem.comment}</label>
+            </li>
+          </ul>
+        </div>
+      )}
+    </Draggable>
   );
 };
 
 const CommentItem = (props) => {
   console.log(props);
   return (
-    <ul class="commentItem">
-      <li class="commentItem-name">
+    <ul className="commentItem" key={props.index}>
+      <li className="commentItem-name">
         <label>{props.commentItem.name}</label>
       </li>
-      <li class="commentItem-message">
+      <li className="commentItem-message">
         <label>{props.commentItem.comment}</label>
       </li>
     </ul>

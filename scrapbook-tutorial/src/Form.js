@@ -21,8 +21,8 @@ class Form extends Component {
 
     return (
       <form>
-        <ul class="wrapper">
-          <li class="form-row">
+        <ul className="wrapper">
+          <li className="form-row">
             <label htmlFor="name">Enter Your Name</label>
             <input
               type="text"
@@ -32,7 +32,7 @@ class Form extends Component {
               onChange={this.handleChange}
             />
           </li>
-          <li class="form-row">
+          <li className="form-row">
             <label htmlFor="comment">Leave your message here</label>
 
             <textarea
@@ -44,7 +44,7 @@ class Form extends Component {
               rows="5"
             />
           </li>
-          <li class="form-row">
+          <li className="form-row">
             <input type="button" value="Submit" onClick={this.submitForm} />
           </li>
         </ul>
